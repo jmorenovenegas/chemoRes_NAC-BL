@@ -25,6 +25,14 @@ allowWGCNAThreads() # multi-threading within WGCNA. RStudio.
 # For r, Rscript use enableWGCNAThreads()
 # enableWGCNAThreads()
 
+dir.create('Results/WGCNAplots')
+dir.create('Data/RData')
+dir.create(path = 'Results/linkcomm')
+dir.create(path = 'Results/modules_enrichments')
+dir.create(path = 'Results/expanded_modules')
+dir.create(path = 'Results/expanded_modules_enrichments')
+dir.create(path = 'Results/expanded_modules_networks')
+
 #######################################################################################
 # DATA INPUT
 #######################################################################################
@@ -121,7 +129,7 @@ sampleTree = hclust(dist(datExpr0), method = "average");
 ## Plot the sample tree
 
 sizeGrWindow(12,9)   
-# pdf(file = "Results/WGCNAplots/sampleClustering.pdf");
+pdf(file = "Results/WGCNAplots/sampleClustering.pdf");
 par(cex = 0.6);
 par(mar = c(0,4,2,0))
 plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="", cex.lab = 1.5,
@@ -129,7 +137,7 @@ plot(sampleTree, main = "Sample clustering to detect outliers", sub="", xlab="",
 
 # Plot a line to show the cut
 abline(h = 65, col = "red");
-# dev.off()
+dev.off()
 #################################
 
 ## Determine cluster under the line
@@ -169,11 +177,11 @@ sampleTree2 = hclust(dist(datExpr), method = "average")
 traitColors = numbers2colors(datTrait, signed = FALSE);
 
 # Plot the sample dendrogram and the colors underneath.
-# pdf("Results/WGCNAplots/dendogram.pdf")
+pdf("Results/WGCNAplots/dendogram.pdf")
 plotDendroAndColors(sampleTree2, traitColors,
                     groupLabels = names(datTrait),
                     main = "Sample dendrogram chemoresistance heatmap")
-# dev.off()
+dev.off()
 save(datExpr, datTrait, file = "Data/RData/chemoresNAC_wgcna-01-dataInput.RData")
 
 
@@ -191,7 +199,7 @@ sft = pickSoftThreshold(datExpr, powerVector = powers, verbose = 5);
 # Plot the results:
 #sizeGrWindow(9, 5);
 par(mfrow = c(1,2));
-#pdf("Results/WGCNAplots/softpower_threshold.pdf")
+pdf("Results/WGCNAplots/softpower_threshold.pdf")
 cex1 = 0.9;
 
 # Scale-free topology fit index as a function of the soft-thresholding power
@@ -210,7 +218,7 @@ plot(sft$fitIndices[,1], sft$fitIndices[,5],
      main = paste("Mean connectivity"))
 text(sft$fitIndices[,1], sft$fitIndices[,5], labels=powers, cex=cex1,col="red")
 abline(h=0,col='red')
-#dev.off()
+dev.off()
 
 
 ### Build a Topological Overlaping Matrix from adjacency matrix  
@@ -251,12 +259,12 @@ dynamicColors = labels2colors(dynamicMods)
 table(dynamicColors)
 # Plot the dendrogram and colors underneath
 
-# pdf("Results/WGCNAplots/gene_clustering_modules.pdf")
+pdf("Results/WGCNAplots/gene_clustering_modules.pdf")
 plotDendroAndColors(geneTree, dynamicColors, "Dynamic Tree Cut",
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05,
                     main = "Gene dendrogram and module colors")
-#dev.off()
+dev.off()
   
 
 ### Modules clustering  
@@ -276,14 +284,14 @@ MEDiss = 1-cor(MEs);
 METree = hclust(as.dist(MEDiss), method = "average");
 
 # Plot the result
-#pdf("Results/WGCNAplots/modules-merge.pdf")
+pdf("Results/WGCNAplots/modules-merge.pdf")
 plot(METree, main = "Clustering of module eigengenes",
      xlab = "", sub = "")
 
 MEDissThres = 0.25 # Corresponds with a correlation of 0.75
 # Plot the cut line into the dendrogram
 abline(h = MEDissThres, col = "red")
-#dev.off()
+dev.off()
 
 ### Merge modules with highly co-expressed genes
 
@@ -297,12 +305,12 @@ mergedColors = merge$colors;
 mergedMEs = merge$newMEs;
 
 
-# pdf(file = "Results/WGCNAplots/gene_clustering_modules-merge.pdf")
+pdf(file = "Results/WGCNAplots/gene_clustering_modules-merge.pdf")
 plotDendroAndColors(geneTree, cbind(dynamicColors, mergedColors),
                     c("Dynamic Tree Cut", "Merged dynamic"),
                     dendroLabels = FALSE, hang = 0.03,
                     addGuide = TRUE, guideHang = 0.05)
-# dev.off()
+dev.off()
 
 ### Rename, label and save  
 
@@ -404,7 +412,7 @@ names(GSPvalue) = paste("p.GS.", names(ChemoRes), sep="");
 MM_vs_GS <- function(module, modNames, moduleColors){
   column = match(module, modNames);
   moduleGenes = moduleColors==module;
-  #pdf(file = 'Results/WGCNAplots/MMvsGS.pdf')
+  pdf(file = 'Results/WGCNAplots/MMvsGS.pdf')
   par(mfrow = c(1,1));
   verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                      abs(geneTraitSignificance[moduleGenes, 1]),
@@ -414,7 +422,7 @@ MM_vs_GS <- function(module, modNames, moduleColors){
                      cex.main = 1.2, cex.lab = 1.2, cex.axis = 1.2, col = module, pch=19)
   abline(h=0.2, col = "red")
   abline(v=0.7, col = "red")
-  #dev.off()
+  dev.off()
   return(NULL)
 }
 
