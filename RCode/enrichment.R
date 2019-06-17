@@ -5,7 +5,6 @@
 # Based on `https://github.com/hbc/clark-nanostring`, `https://rawgit.com/hbc/clark-nanostring/master/tumor-set/tumor-set.html#t-test`, `http://bioconductor.org/packages/devel/bioc/vignettes/NanoStringQCPro/inst/doc/vignetteNanoStringQCPro.pdf`
 
 ##### Libraries ######
-#source("/Users/aurelio/OneDrive - Universidad de Málaga/R-dev/0_loadLibraries.R")
 orgdb = "org.Hs.eg.db"
 biomart_dataset = "hsapiens_gene_ensembl"
 keggname = "hsa"
