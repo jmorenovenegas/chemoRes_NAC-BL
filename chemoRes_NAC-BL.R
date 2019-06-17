@@ -575,3 +575,6 @@ source('RCode/process_subnetworks.R');
 subnetworks = list.files(path = 'Results/expanded_modules_networks', full.names = F);
 lapply(subnetworks, get_gml)
 
+## References  
+# 1. Ghiassian SD, Menche J, Barabási A-L (2015) A DIseAse MOdule Detection (DIAMOnD) Algorithm Derived from a Systematic Analysis of Connectivity Patterns of Disease Proteins in the Human Interactome. PLoS Comput Biol 11(4): e1004120. https://doi.org/10.1371/journal.pcbi.1004120
+
