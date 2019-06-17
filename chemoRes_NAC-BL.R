@@ -25,8 +25,8 @@ allowWGCNAThreads() # multi-threading within WGCNA. RStudio.
 # For r, Rscript use enableWGCNAThreads()
 # enableWGCNAThreads()
 
-dir.create('Results/WGCNAplots')
-dir.create('Data/RData')
+dir.create(path = 'Results/WGCNAplots')
+dir.create(path = 'Data/RData')
 dir.create(path = 'Results/linkcomm')
 dir.create(path = 'Results/modules_enrichments')
 dir.create(path = 'Results/expanded_modules')
@@ -128,7 +128,6 @@ sampleTree = hclust(dist(datExpr0), method = "average");
 
 ## Plot the sample tree
 
-sizeGrWindow(12,9)   
 pdf(file = "Results/WGCNAplots/sampleClustering.pdf");
 par(cex = 0.6);
 par(mar = c(0,4,2,0))
@@ -412,7 +411,7 @@ names(GSPvalue) = paste("p.GS.", names(ChemoRes), sep="");
 MM_vs_GS <- function(module, modNames, moduleColors){
   column = match(module, modNames);
   moduleGenes = moduleColors==module;
-  pdf(file = 'Results/WGCNAplots/MMvsGS.pdf')
+  pdf(file = 'Results/WGCNAplots/',module,'_MMvsGS.pdf')
   par(mfrow = c(1,1));
   verboseScatterplot(abs(geneModuleMembership[moduleGenes, column]),
                      abs(geneTraitSignificance[moduleGenes, 1]),
@@ -555,6 +554,7 @@ source('RCode/expansion_functions.R')
 # To see your current python source type:
 # system('python --version')
 pybin <- "/anaconda3/bin/python"
+
 # We set the path to DIAMOnD
 diamond_path <- "DIAMOnD.py"
 
@@ -568,12 +568,10 @@ lapply(list.files(path = "Results/expanded_modules", full.names = T), network_bu
 lapply(list.files(path = "Results/expanded_modules", full.names = T), expanded_module_enrichment)
 
 #######################################################################################
-# LINK COMMUNITIES ANALYSIS
+# LINK COMMUNITIES ANALYSIS SUBNETWORKS PROCCESSING
 #######################################################################################
 
 source('RCode/process_subnetworks.R');
-interactomefiles = list.files(path = 'Interactomes', full.names = T);
-lapply(interactomefiles, get_gml);
+subnetworks = list.files(path = 'Results/expanded_modules_networks', full.names = F);
+lapply(subnetworks, get_gml)
 
-source('RCode/link_communities.R');
-lapply(list.files(path = 'Results/linkcomm', pattern = '.gml', full.names = T), link_comms)
