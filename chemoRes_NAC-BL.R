@@ -25,8 +25,9 @@ allowWGCNAThreads() # multi-threading within WGCNA. RStudio.
 # For r, Rscript use enableWGCNAThreads()
 # enableWGCNAThreads()
 
-dir.create(path = 'Results/WGCNAplots')
 dir.create(path = 'Data/RData')
+dir.create(path = 'Results')
+dir.create(path = 'Results/WGCNAplots')
 dir.create(path = 'Results/linkcomm')
 dir.create(path = 'Results/modules_enrichments')
 dir.create(path = 'Results/expanded_modules')
